@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Christmas Card — Click to Open</title>
+
+    <!-- Christmas vibe fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg1: #071a13;
+            --bg2: #0b2a1f;
+            --paper: #fffaf0;
+            --ink: #1b1b1b;
+            --red: #e63946;
+            --green: #2a9d8f;
+            --gold: #ffd166;
+            --shadow: 0 24px 60px rgba(0, 0, 0, .35);
+            --glass: rgba(255, 255, 255, .10);
+            --glass2: rgba(255, 255, 255, .06);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+            color: var(--paper);
+            background:
+                radial-gradient(900px 500px at 15% 10%, rgba(255, 209, 102, .18), transparent 60%),
+                radial-gradient(900px 500px at 90% 85%, rgba(230, 57, 70, .18), transparent 60%),
+                linear-gradient(180deg, var(--bg2), var(--bg1));
+            padding: 24px;
+            overflow-x: hidden;
+        }
+
+        /* ====== OPENING SCREEN ====== */
+        .wrap {
+            width: min(980px, 96vw);
+            position: relative;
+        }
+
+        .opening {
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, .14);
+            background:
+                radial-gradient(1200px 420px at 50% -20%, rgba(255, 255, 255, .18), transparent 60%),
+                linear-gradient(180deg, rgba(255, 255, 255, .10), rgba(255, 255, 255, .04));
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            padding: 28px;
+            position: relative;
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: 18px;
+            align-items: center;
+            min-height: 520px;
+        }
+
+        .opening::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(700px 240px at 20% 25%, rgba(42, 157, 143, .18), transparent 60%),
+                radial-gradient(700px 240px at 80% 70%, rgba(230, 57, 70, .16), transparent 60%);
+            pointer-events: none;
+        }
+
+        .open-left {
+            position: relative;
+            padding: 14px;
+        }
+
+        .heroTitle {
+            font-family: "Mountains of Christmas", serif;
+            font-weight: 700;
+            font-size: clamp(42px, 5.2vw, 72px);
+            margin: 0 0 8px 0;
+            text-shadow: 0 12px 35px rgba(0, 0, 0, .35);
+            letter-spacing: .4px;
+        }
+
+        .heroSub {
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.6;
+            opacity: .9;
+            max-width: 58ch;
+        }
+
+        .ctaRow {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+            align-items: center;
+        }
+
+        .btn {
+            appearance: none;
+            border: 1px solid rgba(255, 255, 255, .22);
+            background: rgba(255, 255, 255, .10);
+            color: var(--paper);
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform .08s ease, background .2s ease, border-color .2s ease;
+            display: inline-flex;
+            gap: 10px;
+            align-items: center;
+            box-shadow: 0 14px 30px rgba(0, 0, 0, .22);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, .14);
+            border-color: rgba(255, 255, 255, .30);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btnPrimary {
+            background: linear-gradient(180deg, rgba(230, 57, 70, .95), rgba(230, 57, 70, .78));
+            border-color: rgba(255, 255, 255, .22);
+        }
+
+        .btnPrimary:hover {
+            background: linear-gradient(180deg, rgba(230, 57, 70, 1), rgba(230, 57, 70, .82));
+        }
+
+        .hint {
+            font-size: 12px;
+            opacity: .75;
+        }
+
+        .open-right {
+            position: relative;
+            border-radius: 22px;
+            border: 1px solid rgba(255, 255, 255, .14);
+            background: rgba(0, 0, 0, .14);
+            padding: 18px;
+            overflow: hidden;
+            min-height: 360px;
+            display: grid;
+            place-items: center;
+        }
+
+        /* Envelope illustration */
+        .envelope {
+            width: min(340px, 90%);
+            aspect-ratio: 4/3;
+            position: relative;
+            transform: rotate(-2deg);
+            filter: drop-shadow(0 22px 24px rgba(0, 0, 0, .35));
+        }
+
+        .env-base {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, .12);
+            border: 1px solid rgba(255, 255, 255, .20);
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .env-paper {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            top: 14px;
+            bottom: 18px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, .14);
+            border: 1px dashed rgba(255, 255, 255, .30);
+        }
+
+        .env-flap {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 58%;
+            background: rgba(255, 255, 255, .10);
+            border-top: 1px solid rgba(255, 255, 255, .18);
+            clip-path: polygon(0 0, 50% 62%, 100% 0, 100% 100%, 0 100%);
+        }
+
+        .seal {
+            position: absolute;
+            left: 50%;
+            top: 56%;
+            transform: translate(-50%, -50%);
+            width: 54px;
+            height: 54px;
+            border-radius: 16px;
+            background: rgba(230, 57, 70, .95);
+            border: 1px solid rgba(255, 255, 255, .22);
+            display: grid;
+            place-items: center;
+            box-shadow: 0 14px 24px rgba(0, 0, 0, .25);
+        }
+
+        .seal span {
+            font-family: "Mountains of Christmas", serif;
+            font-size: 22px;
+            line-height: 1;
+        }
+
+        /* Snow overlay for opening */
+        .snow {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: .75;
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, .9), transparent 60%),
+                radial-gradient(1.5px 1.5px at 120px 90px, rgba(255, 255, 255, .8), transparent 60%),
+                radial-gradient(1.8px 1.8px at 260px 60px, rgba(255, 255, 255, .75), transparent 60%),
+                radial-gradient(1.2px 1.2px at 360px 120px, rgba(255, 255, 255, .7), transparent 60%),
+                radial-gradient(2px 2px at 480px 40px, rgba(255, 255, 255, .85), transparent 60%),
+                radial-gradient(1.3px 1.3px at 620px 110px, rgba(255, 255, 255, .75), transparent 60%),
+                radial-gradient(1.6px 1.6px at 780px 70px, rgba(255, 255, 255, .8), transparent 60%);
+            background-size: 900px 180px;
+            animation: snowfall 6s linear infinite;
+            mix-blend-mode: screen;
+        }
+
+        @keyframes snowfall {
+            from {
+                transform: translateY(-60px);
+            }
+
+            to {
+                transform: translateY(260px);
+            }
+        }
+
+        /* ====== POSTCARD (hidden until opened) ====== */
+        .postcard {
+            margin-top: 18px;
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, .12);
+            background:
+                radial-gradient(1200px 420px at 50% -20%, rgba(255, 255, 255, .18), transparent 60%),
+                linear-gradient(180deg, rgba(255, 255, 255, .10), rgba(255, 255, 255, .04));
+            display: none;
+            /* shown on open */
+        }
+
+        .lights {
+            position: absolute;
+            left: -20px;
+            right: -20px;
+            top: -10px;
+            height: 90px;
+            pointer-events: none;
+        }
+
+        .wire {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 20px;
+            height: 4px;
+            background: rgba(0, 0, 0, .35);
+            border-radius: 999px;
+            transform: rotate(-1.2deg);
+            filter: blur(.1px);
+        }
+
+        .bulbs {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 30px;
+            display: flex;
+            justify-content: space-around;
+            gap: 14px;
+            padding: 0 18px;
+        }
+
+        .bulb {
+            width: 14px;
+            height: 18px;
+            border-radius: 10px 10px 12px 12px;
+            background: var(--gold);
+            box-shadow: 0 0 18px rgba(255, 209, 102, .55);
+            position: relative;
+            animation: twinkle 1.6s ease-in-out infinite;
+        }
+
+        .bulb::before {
+            content: "";
+            position: absolute;
+            top: -6px;
+            left: 3px;
+            width: 8px;
+            height: 6px;
+            border-radius: 4px 4px 2px 2px;
+            background: rgba(0, 0, 0, .35);
+        }
+
+        .bulb.red {
+            background: var(--red);
+            box-shadow: 0 0 18px rgba(230, 57, 70, .55);
+            animation-delay: .2s;
+        }
+
+        .bulb.green {
+            background: #3ddc97;
+            box-shadow: 0 0 18px rgba(61, 220, 151, .55);
+            animation-delay: .4s;
+        }
+
+        .bulb.gold {
+            background: var(--gold);
+            animation-delay: .6s;
+        }
+
+        .pc-content {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 18px;
+            padding: 92px 28px 28px;
+            color: var(--paper);
+        }
+
+        .panel {
+            border-radius: 22px;
+            background: var(--glass2);
+            border: 1px solid rgba(255, 255, 255, .12);
+            padding: 22px;
+            position: relative;
+            overflow: hidden;
+            min-height: 430px;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .10);
+            border: 1px solid rgba(255, 255, 255, .18);
+            font-size: 13px;
+            opacity: .95;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #3ddc97;
+            box-shadow: 0 0 0 4px rgba(61, 220, 151, .15);
+        }
+
+        .title {
+            font-family: "Mountains of Christmas", serif;
+            font-weight: 700;
+            font-size: clamp(34px, 5vw, 56px);
+            margin: 12px 0 6px 0;
+            letter-spacing: .5px;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+        }
+
+        .subtitle {
+            margin: 0 0 14px 0;
+            opacity: .9;
+            font-size: 14px;
+            line-height: 1.5;
+            max-width: 54ch;
+        }
+
+        .scene {
+            margin-top: 10px;
+            border-radius: 18px;
+            border: 1px dashed rgba(255, 255, 255, .25);
+            background:
+                radial-gradient(520px 240px at 40% 25%, rgba(255, 255, 255, .18), transparent 60%),
+                radial-gradient(520px 240px at 70% 85%, rgba(230, 57, 70, .10), transparent 60%),
+                rgba(0, 0, 0, .14);
+            height: 320px;
+            display: grid;
+            place-items: end center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .floor {
+            position: absolute;
+            left: -15%;
+            right: -15%;
+            bottom: -30px;
+            height: 50%;
+            border-radius: 50%;
+            background: radial-gradient(70% 70% at 50% 0%, rgba(0, 0, 0, .45), transparent 70%);
+            opacity: .5;
+        }
+
+        .cat {
+            width: min(260px, 70%);
+            margin-bottom: 14px;
+            background: transparent;
+            filter: drop-shadow(0 18px 18px rgba(0, 0, 0, .35));
+            animation: bob 1.35s ease-in-out infinite;
+            transform-origin: 50% 90%;
+        }
+
+        @keyframes bob {
+
+            0%,
+            100% {
+                transform: translateY(6px) rotate(-1deg);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(1deg);
+            }
+        }
+
+        .rightPanel {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            gap: 14px;
+        }
+
+        .noteTitle {
+            font-weight: 600;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            font-size: 12px;
+            opacity: .75;
+            margin: 0;
+        }
+
+        .message {
+            border-radius: 18px;
+            background: rgba(0, 0, 0, .16);
+            border: 1px solid rgba(255, 255, 255, .12);
+            padding: 16px;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .sign {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            opacity: .85;
+            font-size: 12px;
+        }
+
+        .pill {
+            padding: 8px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .10);
+            border: 1px solid rgba(255, 255, 255, .18);
+        }
+
+        /* reveal animation */
+        .reveal {
+            display: block;
+            animation: popIn .5s ease-out both;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: translateY(10px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 860px) {
+            .opening {
+                grid-template-columns: 1fr;
+            }
+
+            .pc-content {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                min-height: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <!-- OPENING SCREEN -->
+        <section class="opening" id="opening">
+            <div class="snow" aria-hidden="true"></div>
+
+            <div class="open-left">
+                <h1 class="heroTitle">A little Christmas surprise 🎄</h1>
+                <p class="heroSub">
+                    Click the button to open your card and reveal a dancing cat with a transparent background.
+                    Swap the GIF link in the code to your own.
+                </p>
+
+                <div class="ctaRow">
+                    <button class="btn btnPrimary" id="openBtn" type="button">Open the card ✨</button>
+                    <button class="btn" id="closeBtn" type="button">Close</button>
+                    <span class="hint">Tip: replace the cat GIF URL inside the <code>&lt;img&gt;</code>.</span>
+                </div>
+            </div>
+
+            <div class="open-right" aria-hidden="true">
+                <div class="envelope">
+                    <div class="env-base"></div>
+                    <div class="env-paper"></div>
+                    <div class="env-flap"></div>
+                    <div class="seal"><span>🎁</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- POSTCARD (revealed) -->
+        <main class="postcard" id="postcard" aria-label="Christmas card with a dancing cat">
+            <div class="lights" aria-hidden="true">
+                <div class="wire"></div>
+                <div class="bulbs">
+                    <span class="bulb red"></span>
+                    <span class="bulb green"></span>
+                    <span class="bulb gold"></span>
+                    <span class="bulb red"></span>
+                    <span class="bulb green"></span>
+                    <span class="bulb gold"></span>
+                    <span class="bulb red"></span>
+                    <span class="bulb green"></span>
+                </div>
+            </div>
+
+            <div class="snow" aria-hidden="true"></div>
+
+            <section class="pc-content">
+                <section class="panel">
+                    <div class="tag"><span class="dot" aria-hidden="true"></span> Christmas vibes • dance break</div>
+
+                    <h2 class="title">Merry Christmas!</h2>
+                    <p class="subtitle">
+                        Sending you warm wishes, cozy moments, and one very important thing:
+                        a dancing cat on repeat 🐾🎄
+                    </p>
+
+                    <div class="scene">
+                        <div class="floor" aria-hidden="true"></div>
+
+                        <!-- ✅ Replace this URL with ANY transparent-background GIF/WEBP/PNG -->
+                        <img class="cat"
+                            src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif"
+                            alt="Dancing cat with transparent background" />
+                    </div>
+                </section>
+
+                <aside class="panel rightPanel">
+                    <p class="noteTitle">A little note</p>
+
+                    <div class="message">
+                        Hey you ✨<br><br>
+                        Wishing you a Christmas that feels soft, sweet, and safe.
+                        If the day gets too serious… take a tiny dance break 💃😸
+                        <br><br>
+                        With love,
+                    </div>
+
+                    <div class="sign">
+                        <span class="pill">Air Mail • Priority</span>
+                        <span class="pill">— Your Name</span>
+                    </div>
+                </aside>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const openBtn = document.getElementById('openBtn');
+        const closeBtn = document.getElementById('closeBtn');
+        const opening = document.getElementById('opening');
+        const postcard = document.getElementById('postcard');
+
+        openBtn.addEventListener('click', () => {
+            opening.classList.add('hidden');
+            postcard.classList.add('reveal');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            postcard.classList.remove('reveal');
+            postcard.style.display = 'none';
+            // force reflow so reveal animation can replay
+            void postcard.offsetHeight;
+            postcard.style.display = '';
+            opening.classList.remove('hidden');
+        });
+    </script>
+</body>
+
+</html>
