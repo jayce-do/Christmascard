@@ -162,31 +162,37 @@
 
         /* Envelope illustration */
         .envelope {
-            width: min(340px, 90%);
+            width: min(360px, 92%);
             aspect-ratio: 4/3;
             position: relative;
             transform: rotate(-2deg);
-            filter: drop-shadow(0 22px 24px rgba(0, 0, 0, .35));
+            filter: drop-shadow(0 26px 30px rgba(0, 0, 0, .36));
+            transition: transform .18s ease;
+        }
+
+        .envelope:hover {
+            transform: rotate(-1deg) scale(1.02);
         }
 
         .env-base {
             position: absolute;
             inset: 0;
-            background: rgba(255, 255, 255, .12);
-            border: 1px solid rgba(255, 255, 255, .20);
-            border-radius: 18px;
+            background: linear-gradient(180deg, #fff6f8 0%, #fffaf0 100%);
+            border: 1px solid rgba(255, 255, 255, .22);
+            border-radius: 20px;
             overflow: hidden;
         }
 
         .env-paper {
             position: absolute;
-            left: 16px;
-            right: 16px;
-            top: 14px;
+            left: 18px;
+            right: 18px;
+            top: 18px;
             bottom: 18px;
             border-radius: 14px;
-            background: rgba(255, 255, 255, .14);
-            border: 1px dashed rgba(255, 255, 255, .30);
+            background: linear-gradient(180deg, #fffefc 0%, #fff7f4 100%);
+            border: 1px dashed rgba(0, 0, 0, .06);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.06);
         }
 
         .env-flap {
@@ -194,31 +200,67 @@
             left: 0;
             right: 0;
             bottom: 0;
-            height: 58%;
-            background: rgba(255, 255, 255, .10);
-            border-top: 1px solid rgba(255, 255, 255, .18);
+            height: 56%;
+            background: linear-gradient(180deg, rgba(250, 235, 240, 0.96), rgba(255, 245, 242, 0.96));
+            border-top: 1px solid rgba(0, 0, 0, .06);
             clip-path: polygon(0 0, 50% 62%, 100% 0, 100% 100%, 0 100%);
+            transition: transform .45s cubic-bezier(.2, .9, .2, 1);
+            z-index: 2;
         }
 
-        .seal {
+        /* Cute heart sticker (replaces old emoji seal) */
+
+        .env-heart {
             position: absolute;
             left: 50%;
-            top: 56%;
+            top: 58%;
             transform: translate(-50%, -50%);
-            width: 54px;
-            height: 54px;
-            border-radius: 16px;
-            background: rgba(230, 57, 70, .95);
-            border: 1px solid rgba(255, 255, 255, .22);
+            width: 84px;
+            height: 84px;
+            border-radius: 20px;
             display: grid;
             place-items: center;
-            box-shadow: 0 14px 24px rgba(0, 0, 0, .25);
+            z-index: 4;
+            cursor: pointer;
+            transition: transform .18s ease, box-shadow .18s ease;
+            user-select: none;
+            background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.02)), linear-gradient(135deg, #fff7f9, #fff1f2);
+            border: 1px solid rgba(255, 255, 255, 0.32);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            padding: 6px;
         }
 
-        .seal span {
-            font-family: "Mountains of Christmas", serif;
-            font-size: 22px;
-            line-height: 1;
+        .env-heart svg {
+            width: 56px;
+            height: 56px;
+            display: block;
+        }
+
+        .env-heart:hover {
+            transform: translate(-50%, -50%) scale(1.08);
+            box-shadow: 0 18px 34px rgba(0, 0, 0, 0.16);
+        }
+
+        .env-heart.pulsing {
+            animation: heartPulse 900ms ease-in-out 1;
+        }
+
+        @keyframes heartPulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            30% {
+                transform: translate(-50%, -50%) scale(1.22);
+            }
+
+            60% {
+                transform: translate(-50%, -50%) scale(0.98);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
         }
 
         /* Snow overlay for opening */
@@ -512,6 +554,37 @@
                 min-height: auto;
             }
         }
+
+        /* Confetti pieces */
+        .confetti-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: visible;
+            z-index: 1200;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 14px;
+            border-radius: 2px;
+            will-change: transform, opacity;
+            transform-origin: center;
+            opacity: 0.95;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 
@@ -531,7 +604,8 @@
                 <div class="ctaRow">
                     <button class="btn btnPrimary" id="openBtn" type="button">Mở ở đây nè ✨</button>
                     <button class="btn" id="closeBtn" type="button">Hong biết để nút này làm gì 🤡</button>
-                    <span class="hint">Warning: Hãy hít một hơi thật là sâuuu vì nó có thể rất là chếnnn chúaaa 🤡</span>
+                    <span class="hint">Warning: Hãy hít một hơi thật là sâuuu vì nó có thể rất là chếnnn chúaaa
+                        🤡</span>
                 </div>
             </div>
 
@@ -540,7 +614,24 @@
                     <div class="env-base"></div>
                     <div class="env-paper"></div>
                     <div class="env-flap"></div>
-                    <div class="seal"><span>🎁</span></div>
+                    <div class="env-heart" role="img" aria-label="heart sticker" title="Click to send love">
+                        <!-- round, cute heart sticker: soft gradient + tiny shadow -->
+                        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="g1" x1="0%" x2="100%" y1="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#ffd1dc" />
+                                    <stop offset="100%" stop-color="#ff6fa1" />
+                                </linearGradient>
+                                <filter id="s" x="-20%" y="-20%" width="140%" height="140%">
+                                    <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#ff6fa1"
+                                        flood-opacity="0.18" />
+                                </filter>
+                            </defs>
+                            <circle cx="16" cy="16" r="15" fill="#fff" opacity="0.04" />
+                            <path fill="url(#g1)" filter="url(#s)"
+                                d="M16 28s-12-7.4-12-13.6C4 9.6 9.2 6 12.6 8.4 14 9.6 16 11.8 16 11.8s2-2.2 3.4-3.4C22.8 6 28 9.6 28 14.4 28 20.6 16 28 16 28z" />
+                        </svg>
+                    </div>
                 </div>
             </div>
         </section>
@@ -569,7 +660,8 @@
 
                     <h2 class="title">Merry Christmas!</h2>
                     <p class="subtitle">
-                        Gửi em bé nhiều cái ô
+                        Gửi em bé nhiều cái ơm và cái thơmmm. Và chây xì chỉ muốn nói là: Merry Christmas to my dearest
+                        love!
                     </p>
 
                     <div class="scene">
@@ -577,7 +669,7 @@
 
                         <!-- ✅ Replace this URL with ANY transparent-background GIF/WEBP/PNG -->
                         <img class="cat"
-                            src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif"
+                            src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdnhzNWU1c3dpdDZxaDZybmEya29hNTBvOThqc3Vta2p5bW01djBjbCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/udQgnMLoEiQes/giphy.gif"
                             alt="Dancing cat with transparent background" />
                     </div>
                 </section>
@@ -609,6 +701,8 @@
         const postcard = document.getElementById('postcard');
 
         openBtn.addEventListener('click', () => {
+            // small confetti burst when opening
+            if (typeof launchConfetti === 'function') launchConfetti(36);
             opening.classList.add('hidden');
             postcard.classList.add('reveal');
         });
@@ -621,6 +715,49 @@
             postcard.style.display = '';
             opening.classList.remove('hidden');
         });
+
+        // Confetti launcher
+        function launchConfetti(count = 30) {
+            const colors = ['#ff6fa1', '#ffd1dc', '#ffd166', '#3ddc97', '#ff9f43', '#9b5cff'];
+            const container = document.createElement('div');
+            container.className = 'confetti-container';
+            document.body.appendChild(container);
+
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('div');
+                el.className = 'confetti-piece';
+                const size = Math.round(6 + Math.random() * 12);
+                el.style.width = size + 'px';
+                el.style.height = Math.round(size * 1.2) + 'px';
+                el.style.left = (10 + Math.random() * 80) + '%';
+                el.style.top = (10 + Math.random() * 20) + '%';
+                el.style.background = colors[Math.floor(Math.random() * colors.length)];
+                const duration = 900 + Math.random() * 900;
+                el.style.animation = `confettiFall ${duration}ms cubic-bezier(.18,.82,.36,1) forwards`;
+                el.style.transform = `rotate(${Math.random() * 360}deg)`;
+                container.appendChild(el);
+
+                // remove after animation
+                el.addEventListener('animationend', () => el.remove());
+            }
+
+            // cleanup container
+            setTimeout(() => {
+                if (container.parentNode) container.remove();
+            }, 2200);
+        }
+
+        // heart sticker interaction: click to pulse
+        const heart = document.querySelector('.env-heart');
+        if (heart) {
+            heart.addEventListener('click', () => {
+                heart.classList.remove('pulsing');
+                // force reflow to restart animation
+                void heart.offsetWidth;
+                heart.classList.add('pulsing');
+                setTimeout(() => heart.classList.remove('pulsing'), 1000);
+            });
+        }
     </script>
 </body>
 
